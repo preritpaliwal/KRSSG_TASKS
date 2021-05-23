@@ -1,0 +1,2 @@
+beginner_tutorials:daenerys:turtle
+-DCATKIN_DEVEL_PREFIX=/home/tesla/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/tesla/catkin_ws/install -G Unix Makefiles
