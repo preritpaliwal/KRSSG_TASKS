@@ -3,8 +3,8 @@ import cv2
 import math
 from collections import deque
 
-img  = cv2.imread("/home/tesla/Desktop/tasks/task 3/images/image 1.png",1)
-
+img  = cv2.imread("/home/tesla/Desktop/tasks/task 3/codes/images/image 1.png",1)
+img = cv2.resize(img,(100,100),interpolation=cv2.INTER_AREA)
 node = np.full(img.shape,img.shape[0]+img.shape[1]+1,dtype = np.float32)
 cv2.namedWindow("hello",cv2.WINDOW_NORMAL)
 cv2.namedWindow("image",cv2.WINDOW_NORMAL)
@@ -18,6 +18,7 @@ start = [113,204,45]
 end = [60,76,231]
 blue = [255,0,0]
 red = [0,0,255]
+yellow = [0,255,255]
 green = [0,255,0]
 magenta = [255,0,255]
 dia = math.sqrt(2)
@@ -34,6 +35,49 @@ def comp(a1,a2):
         return 0
 indexi = -1
 indexj = -1
+def thresh_white(a):
+    k=0
+    for i in range(3):
+        if a[i]>200:
+            k+=1
+    if k==3:
+        return white
+    else:
+        return a
+
+def thresh_green(a):
+    k=0
+    if a[0]<100:
+        k+=1
+    if a[1]>200:
+        k+=1
+    if a[2]<100:
+        k+=1
+    if k==3:
+        return green
+    else:
+        return a
+
+def thresh_red(a):
+    k=0
+    if a[0]<100:
+        k+=1
+    if a[2]>200:
+        k+=1
+    if a[1]<100:
+        k+=1
+    if k==3:
+        return red
+    else:
+        return a
+def thresh(img):
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            img[i][j] = thresh_white(img[i][j])
+            img[i][j] = thresh_green(img[i][j])
+            img[i][j] = thresh_red(img[i][j])
+
+    
 
 def bfs(x,y,find,color,scolor):
     node[x][y][0] = 0
@@ -44,7 +88,7 @@ def bfs(x,y,find,color,scolor):
     i=0
     while(len(q)):
         i+=1
-        if i%1 == 0:
+        if i%10 == 0:
             cv2.imshow("image",img)
             cv2.waitKey(1)
         i,j = q.popleft()
@@ -218,9 +262,10 @@ def bfs(x,y,find,color,scolor):
                 img[i+1][j+1] = scolor
                 q.append((i+1,j+1))
         
-bfs(0,0,green,red,grey)
+thresh(img )
+bfs(0,0,green,yellow,grey)
 print(indexi,indexj)
-bfs(indexi,indexj,red,blue,green)
+bfs(indexi,indexj,red,blue,magenta)
 print(indexi,indexj)
 print(node[indexi][indexj])
 a = indexi

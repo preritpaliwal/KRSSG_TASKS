@@ -3,12 +3,52 @@ import cv2
 import math
 from collections import deque
 
-img  = cv2.imread("C:\\Users\\Dell\\Desktop\\Workshops\\computer vision\\task\\task 1\\Task_1_Low.png",1)
+img  = cv2.imread("/home/tesla/Desktop/tasks/task 3/codes/images/image 1.png",1)
 
-
+img = cv2.resize(img,(100,100),interpolation=cv2.INTER_AREA)
 # img = cv2.resize(img1,None,fx=0.1, fy=0.1, interpolation = cv2.INTER_AREA)  
 
+def thresh_white(a):
+    k=0
+    for i in range(3):
+        if a[i]>200:
+            k+=1
+    if k==3:
+        return white
+    else:
+        return a
 
+def thresh_green(a):
+    k=0
+    if a[0]<100:
+        k+=1
+    if a[1]>200:
+        k+=1
+    if a[2]<100:
+        k+=1
+    if k==3:
+        return green
+    else:
+        return a
+
+def thresh_red(a):
+    k=0
+    if a[0]<100:
+        k+=1
+    if a[2]>200:
+        k+=1
+    if a[1]<100:
+        k+=1
+    if k==3:
+        return red
+    else:
+        return a
+def thresh(img):
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            img[i][j] = thresh_white(img[i][j])
+            img[i][j] = thresh_green(img[i][j])
+            img[i][j] = thresh_red(img[i][j])
 
 
 node = np.full(img.shape,img.shape[0]+img.shape[1]+1,dtype = np.uint8)
@@ -26,6 +66,7 @@ end = [60,76,231]
 blue = [255,0,0]
 red = [0,0,255]
 green = [0,255,0]
+yellow = [0,255,255]
 magenta = [255,0,255]
 
 
@@ -67,7 +108,7 @@ def bfs(x,y,find,color,scolor):
     i=0
     while(len(q)):
         i+=1
-        if i%1 == 0:
+        if i%10 == 0:
             cv2.imshow("image",img)
             cv2.waitKey(1)
         i,j = q.popleft()
@@ -157,9 +198,11 @@ def bfs(x,y,find,color,scolor):
                 img[i][j-1] = scolor
                 q.append((i,j-1))
                 
-bfs(0,0,start,red,grey)
+
+thresh(img)
+bfs(0,0,green,yellow,grey)
 print(indexi,indexj)
-bfs(indexi,indexj,end,blue,green)
+bfs(indexi,indexj,red,blue,magenta)
 print(indexi,indexj)
 print(node[indexi][indexj])
 a = indexi

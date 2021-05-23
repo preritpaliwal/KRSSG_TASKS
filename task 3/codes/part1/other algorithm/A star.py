@@ -3,7 +3,7 @@ import cv2
 import math
 from queue import PriorityQueue
 
-img  = cv2.imread("/home/tesla/Desktop/opencv/task/task 1/Task_1_Low.png",1)
+img  = cv2.imread("/home/tesla/Desktop/tasks/task 3/codes/images/image 1.png",1)
 
 node = np.full(img.shape,img.shape[0]+img.shape[1]+1,dtype = np.uint8)
 
@@ -18,12 +18,14 @@ start = [27,216,17]
 end = [13,13,243]
 blue = [255,0,0]
 red = [0,0,255]
+yellow = [0,255,255]
 green = [0,255,0]
 magenta = [255,0,255]
  
 img = cv2.resize(img,(120,120), interpolation = cv2.INTER_AREA)
 
-def thresh(a):
+
+def thresh_white(a):
     k=0
     for i in range(3):
         if a[i]>200:
@@ -33,9 +35,37 @@ def thresh(a):
     else:
         return a
 
-for i in range(img.shape[0]):
-    for j in range(img.shape[1]):
-        img[i][j] = thresh(img[i][j])
+def thresh_green(a):
+    k=0
+    if a[0]<100:
+        k+=1
+    if a[1]>200:
+        k+=1
+    if a[2]<100:
+        k+=1
+    if k==3:
+        return green
+    else:
+        return a
+
+def thresh_red(a):
+    k=0
+    if a[0]<100:
+        k+=1
+    if a[2]>200:
+        k+=1
+    if a[1]<100:
+        k+=1
+    if k==3:
+        return red
+    else:
+        return a
+def thresh(img):
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            img[i][j] = thresh_white(img[i][j])
+            img[i][j] = thresh_green(img[i][j])
+            img[i][j] = thresh_red(img[i][j])
 
 # heuristic - eucledian distance
 def comp(a1,a2):
@@ -49,19 +79,24 @@ def comp(a1,a2):
         return 1
     else:
         return 0
+
 def f(i,j):
     global ie,je
     return math.sqrt((i-ie)**2 + (j-je)**2) + node[i][j][0]
+
 def A(ib,jb):
     global ie,je
     q = PriorityQueue()
     node[ib][jb][0] = 0
     q.put((f(ib,jb),(ib,jb)))
+    t = 0
     while(q.qsize()):
+        t+=1
         cost,(i,j) = q.get()
         img[i][j] = blue
-        cv2.imshow("image",img)
-        cv2.waitKey(1)
+        if t%10 == 0:
+            cv2.imshow("image",img)
+            cv2.waitKey(1)
         if i-1>=0:
             if i-1 == ie and j ==je:
                 if node[i-1][j][0] > node[i][j][0] + 1:
@@ -140,19 +175,11 @@ def A(ib,jb):
                 q.put((f(i,j+1),(i,j+1)))
         
 
-# for i in range(img.shape[0]):
-#     for j in range(img.shape[1]):
-#         if comp(img[i][j],start):
-#             ib = i
-#             jb = j
-#         if comp(img[i][j],end):
-#             ie = i
-#             je = j
-
 ib,jb = 10,10
 ie = 110
 je = 110
 
+thresh(img)
 
 A(ib,jb)
 a = ie
