@@ -1,0 +1,344 @@
+2u3
+2u4
+3u5
+2u6
+-1d-2
+4u6
+-2d3
+
+
+
+1U4 
+2D1 
+4U5 
+4D2 
+3D2 
+-1U2
+-2D-3 
+
+
+
+
+# def operate(l,pas,q):
+#     for p in pas:
+#         print(p.start,p.end)
+#         # print(p.start-syst.l1.currentfloor)
+#         # if q==2:
+#         #     print("\n====================================================================\n")  
+#         while p.start-l.currentfloor != 0:
+#             # print(q)
+#             if p.start-l.currentfloor>0:
+#                 l.fsm.transition("toup")
+#             else:
+#                 l.fsm.transition("todown")
+#             # if q ==2:
+#                 # print("\n====================================================================\n")
+#             print(f"lift {q} is",end=" ")
+#             l.fsm.execute()
+#             l.move()
+#             # if q ==2:
+#                 # print("\n====================================================================\n")
+
+#         # print(q)
+#         l.fsm.transition("torest")
+#         # if q ==2:
+#             # print("\n====================================================================\n")
+#         print(f"lift {q} is",end=" ")
+#         l.fsm.execute()
+#         l.move()
+#         # if q ==2:
+#         #     print("\n====================================================================\n")
+
+#         while p.end-l.currentfloor != 0:
+#             # print(q)
+#             if p.end-l.currentfloor>0:
+#                 l.fsm.transition("toup")
+#             else:
+#                 l.fsm.transition("todown")
+#             # if q ==2:
+#             #     print("\n====================================================================\n")
+#             print(f"lift {q} is",end=" ")
+#             l.fsm.execute()
+#             l.move()
+#             # if q ==2:
+#             #     print("\n====================================================================\n")
+
+#         # print(q)
+#         l.fsm.transition("torest")                                                                                                    
+#         # if q ==2:
+#         #     print("\n====================================================================\n")
+#         print(f"lift {q} is",end=" ")
+#         l.fsm.execute()
+#         l.move()
+#         # if q ==2:
+#         #     print("\n====================================================================\n")
+
+# def operate(l,pas,q):
+#     pstart = []
+#     pend = []
+#     n = len(pas)
+#     for i in range(n):
+#         pstart.append((pas[i].start,i))
+        
+#     pstart.sort()
+    
+#     print(pstart)
+
+#     i=0
+#     j=0
+#     inlift = []
+#     reached = []
+#     if pstart[0][0] + pstart[n-1][0] - 2*l.currentfloor>0:
+#         while i<n:
+#             # print(f"i = {i}, n = {n}")
+#             if pstart[i][0]>l.currentfloor:
+#                 l.fsm.transition("toup")
+#             elif pstart[i][0]<l.currentfloor:
+#                 l.fsm.transition("todown")
+#             else:
+#                 # print(f"cf-ps = {pstart[i][0]>l.currentfloor}")
+#                 l.fsm.transition("torest")
+#                 if i+1<n:
+#                     # print("control was here")
+#                     # print(l.direction,np.sign(pstart[i+1][0] - l.currentfloor)) 
+#                     if l.direction==np.sign(pstart[i+1][0] - l.currentfloor):
+#                         print(f"hi passenger {pstart[i][1]+1}")
+#                         inlift.append(pstart[i][1])
+#                         # print(f"i = {i}")
+#                         i+=1
+                        
+#                         # print(f"i = {i}")
+                    
+#                 elif i+1==n:
+#                     # print("not")
+#                     print(f"hi passenger {pstart[i][1]+1}")
+#                     inlift.append(pstart[i][1])
+#                     i+=1
+
+#             for o in inlift:
+#                 if pas[o].end==l.currentfloor:
+#                     l.fsm.transition("torest")
+#                     print(f"bye passenger {o+1}")
+#                     reached.append(o)
+#                     inlift.remove(o)
+            
+#             l.fsm.execute()
+#             l.move()
+#             # if l.currentfloor==7:
+#             #     print("breaking..,")
+#             #     break
+#     else:
+#         i = n-1
+#         while i>-1:
+#             # print(f"i = {i}, n = {n}")
+#             if pstart[i][0]>l.currentfloor:
+#                 l.fsm.transition("toup")
+#             elif pstart[i][0]<l.currentfloor:
+#                 l.fsm.transition("todown")
+#             else:
+#                 # print(f"cf-ps = {pstart[i][0]>l.currentfloor}")
+#                 if i-1>-1:
+#                     # print("control was here")
+#                     # print(l.direction,np.sign(pstart[i+1][0] - l.currentfloor)) 
+#                     if l.direction==np.sign(pstart[i-1][0] - l.currentfloor) or pstart[i-1][0] - l.currentfloor==0:
+#                         print(f"hi passenger {pstart[i][1]+1}")
+#                         inlift.append(pstart[i][1])
+#                         # print(f"i = {i}")
+#                         i-=1
+#                         l.fsm.transition("torest")
+#                         # print(f"i = {i}")
+                    
+#                 elif i-1==0:
+#                     # print("not")
+#                     print(f"hi passenger {pstart[i][1]+1}")
+#                     inlift.append(pstart[i][1])
+#                     i-=1
+#                     l.fsm.transition("torest")
+
+#             for o in inlift:
+#                 if pas[o].end==l.currentfloor:
+#                     l.fsm.transition("torest")
+#                     print(f"bye passenger {o+1}")
+#                     reached.append(o)
+#                     inlift.remove(o)
+            
+#             l.fsm.execute()
+#             l.move()
+#             # if l.currentfloor==7:
+#             #     print("breaking..,")
+#             #     break
+
+#     print("\n\n\n\n")
+#     for i in inlift:
+#         pend.append((pas[i].end,i))
+
+#     pend.sort()
+#     m = len(inlift)
+#     print(pend,len(pend),m)
+    
+
+#     if pend[0][0] + pend[m-1][0] - 2*l.currentfloor>0:
+#         while j<m:
+#             if pend[j][0]-l.currentfloor>0:
+#                 l.fsm.transition("toup")
+#             elif pend[j][0]-l.currentfloor==0:
+#                 l.fsm.transition("torest")
+#                 print(f"byepassenger {pend[j][1]+1}")
+#                 inlift.remove(pend[j][1])
+#                 reached.append(pend[j][1])
+#                 j+=1
+#             else:
+#                 l.fsm.transition("todown")
+#             l.fsm.execute()
+#             l.move()
+#     else:
+#         j = m-1
+#         while j>-1:
+#             if pend[j][0]-l.currentfloor>0:
+#                 l.fsm.transition("toup")
+#             elif pend[j][0]-l.currentfloor==0:
+#                 l.fsm.transition("torest")
+#                 print(f"bye passenger {pend[j][1]+1}")
+#                 inlift.remove(pend[j][1])
+#                 reached.append(pend[j][1])
+#                 j-=1
+#             else:
+#                 l.fsm.transition("todown")
+#             l.fsm.execute()
+#             l.move()
+
+#     print(f"inlift = {len(inlift)}                reached = {len(reached)}")
+
+
+
+====================================================================================================================================
+
+
+
+
+
+
+
+
+# 5u7
+# -7u7
+# 7d1
+# 1u9
+
+# 5u7
+# 7d1
+# 1u9
+
+1u9
+3u7
+
+0u2
+2d0
+
+        # # if i==0:
+        # #     while(pstart[i][0]-l.currentfloor):
+        # #         if pstart[i][0]-l.currentfloor>0:
+        # #             l.fsm.transition("toup")
+        # #         elif pstart[i][0]-l.currentfloor<0:
+        # #             l.fsm.transition("todown")
+        # #         l.fsm.execute()
+        # #         l.move()
+        # if pstart[i][0]-l.currentfloor>0:
+        #     l.fsm.transition("toup")
+        # elif pstart[i][0]-l.currentfloor<0:
+        #     l.fsm.transition("todown")
+        # else:
+        #     if pas[pstart[i][1]].end - l.currentfloor>0:
+        #         l.fsm.transition("torest")
+        #         in
+        #         i+=1
+        # l.fsm.execute()
+        # l.move()
+        # for k in range(i):
+        #     pas[pstart[k][1]].end
+
+
+# 5u7            
+# 7d1
+# 1u9
+
+
+
+
+0u7
+7d0
+0d-9
+-9u5
+
+1u10
+10d-2
+3u10
+-2u10
+11d-2
+
+
+-3u-2
+-3u-1
+-3u0
+-3u1
+-3u2
+-3u3
+-2d-3
+-2u-1
+-2u0
+-2u1
+-2u2
+-2u3
+-1d-3
+-1d-2
+-1u0
+-1u1
+-1u2
+-1u3
+0d-3
+0d-2
+0d-1
+0u1
+0u2
+0u3
+1d-3
+1d-2
+1d-1
+1d0
+1u2
+1u3
+2d-3
+2d-2
+2d-1
+2d0
+2d1
+2u3
+3d-3
+3d-2
+3d-1
+3d0
+3d1
+3d2
+
+
+
+2d1
+2d0
+2d-1
+2d-1
+1u2
+1d0
+1d-1
+1d-2
+0u2
+0u1
+0d-1
+0d-2
+-1u2
+-1u1
+-1u0
+-1d-2
+-2u2
+-2u-1
+-2u0
+-2u1
