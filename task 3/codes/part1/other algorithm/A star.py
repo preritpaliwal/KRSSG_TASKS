@@ -5,7 +5,7 @@ from queue import PriorityQueue
 
 img  = cv2.imread("/home/tesla/Desktop/tasks/task 3/codes/images/image 1.png",1)
 
-node = np.full(img.shape,img.shape[0]+img.shape[1]+1,dtype = np.uint8)
+node = np.full(1000,dtype = np.uint32)
 
 cv2.namedWindow("image",cv2.WINDOW_NORMAL)
 cv2.imshow("image",img)
